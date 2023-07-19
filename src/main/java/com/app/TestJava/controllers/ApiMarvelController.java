@@ -19,12 +19,12 @@ public class ApiMarvelController {
     @Autowired
     private ApiMarvelService apiMarvelService;
     @GetMapping()
-    public ResponseEntity<MarvelModel[]> getAll() {
+    public ResponseEntity<Object[]> getAll() {
         if(apiMarvelService.getAll() != null) {
-            return new ResponseEntity<MarvelModel[]>(apiMarvelService.getAll(), HttpStatus.OK);
+            return new ResponseEntity<Object[]>(apiMarvelService.getAll(), HttpStatus.OK);
         }
         else {
-            return new ResponseEntity<MarvelModel[]>(apiMarvelService.getAll(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Object[]>(apiMarvelService.getAll(), HttpStatus.NOT_FOUND);
         }
     }
     @GetMapping("/{characterId}")
