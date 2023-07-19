@@ -6,20 +6,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 
 
 @Service
 public class ApiMarvelService {
-    private final String baseUrl = "https://developer.marvel.com/v1/public/characters";
-    private String apiKey = "1234";
-    private String timestamp = String.valueOf(Instant.now().toEpochMilli());
-    private String hash = MarvelAuthentication.generateHash();
+    private final String baseUrl = "https://gateway.marvel.com/v1/public/characters";
+    //private final String baseUrl = "https://developer.marvel.com/v1/public/characters";
+    private static String publicKey = "7de0a07897b8e56b7c99b8c5a8740055";
+    private static String privateKey = "5f1040d9af2401040adc394489857e64c256414b";
+    private String timestamp = String.valueOf(Instant.now().toEpochMilli()).substring(0,3);
+    private String hash = MarvelAuthentication.generateHash(this.timestamp,this.privateKey,this.publicKey);
+
 //    public MarvelModel[] getAll() {
 //        try {
 //            RestTemplate restTemplate = new RestTemplate();
-//            String url = baseUrl + "?ts=" + timestamp + "&apikey=" + apiKey + "&hash=" + hash;
-//                MarvelModel[] reponse = restTemplate.getForEntity(url, MarvelModel[].class).getBody();
+//            String url = baseUrl + "?ts=" + this.timestamp + "&apikey=" + this.apiKey + "&hash=" + this.hash;
+//            MarvelModel[] reponse = restTemplate.getForEntity(url, MarvelModel[].class).getBody();
 //            return reponse;
 //
 //        }
@@ -28,12 +33,13 @@ public class ApiMarvelService {
 //            return null;
 //        }
 //    }
-    public Object[] getAll() {
+
+    public Object getAll() {
         try {
             RestTemplate restTemplate = new RestTemplate();
-            String url = this.baseUrl + "?ts=" + this.timestamp + "&apikey=" + this.apiKey + "&hash=" + this.hash;
+            String url = this.baseUrl + "?ts=" + this.timestamp + "&apikey=" + this.publicKey + "&hash=" + this.hash;
             System.out.println(url);
-            Object[] reponse = restTemplate.getForEntity(url, Object[].class).getBody();
+            Object reponse = restTemplate.getForEntity(url, Object.class).getBody();
             System.out.println(reponse);
             return reponse;
 
@@ -46,46 +52,16 @@ public class ApiMarvelService {
     public MarvelModel getById(int id) {
         try {
             RestTemplate restTemplate = new RestTemplate();
-            String url = baseUrl + "/" +id + "?ts=" + timestamp + "&apikey=" + apiKey + "&hash=" + hash;
+            String url = baseUrl + "/" +id + "?ts=" + timestamp + "&apikey=" + publicKey + "&hash=" + hash;
             System.out.println(url);
             MarvelModel reponse = restTemplate.getForEntity(url, MarvelModel.class).getBody();
 
             return reponse;
-
         }
         catch (HttpClientErrorException e) {
             System.out.println(e);
             return null;
         }
     }
-
-
-    //Cree estas clases para probar si la logica funcionaba con un mock real
-
-//    public Object[] getAllTest() {
-//        try {
-//            RestTemplate restTemplate = new RestTemplate();
-//            Object[] reponse = restTemplate.getForEntity("https://jsonplaceholder.typicode.com/todos", Object[].class).getBody();
-//            return reponse;
-//
-//        }
-//        catch (HttpClientErrorException e) {
-//            System.out.println(e);
-//            return null;
-//        }
-//    }
-//    public Object getByIdTest(int id) {
-//        try {
-//            String url = "https://jsonplaceholder.typicode.com/todos/" + id;
-//            RestTemplate restTemplate = new RestTemplate();
-//            Object reponse = restTemplate.getForEntity(url, Object.class).getBody();
-//            return reponse;
-//
-//        }
-//        catch (HttpClientErrorException e) {
-//            System.out.println(e);
-//            return null;
-//        }
-//    }
 
 }

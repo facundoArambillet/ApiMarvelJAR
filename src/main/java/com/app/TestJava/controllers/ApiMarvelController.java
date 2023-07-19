@@ -19,12 +19,12 @@ public class ApiMarvelController {
     @Autowired
     private ApiMarvelService apiMarvelService;
     @GetMapping()
-    public ResponseEntity<Object[]> getAll() {
+    public ResponseEntity<Object> getAll() {
         if(apiMarvelService.getAll() != null) {
-            return new ResponseEntity<Object[]>(apiMarvelService.getAll(), HttpStatus.OK);
+            return new ResponseEntity<Object>(apiMarvelService.getAll(), HttpStatus.OK);
         }
         else {
-            return new ResponseEntity<Object[]>(apiMarvelService.getAll(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Object>(apiMarvelService.getAll(), HttpStatus.NOT_FOUND);
         }
     }
     @GetMapping("/{characterId}")
@@ -36,26 +36,5 @@ public class ApiMarvelController {
             return new ResponseEntity<MarvelModel>(apiMarvelService.getById(id), HttpStatus.NOT_FOUND);
         }
     }
-
-    //Cree estas clases para probar si la logica funcionaba con un mock real
-
-//    @GetMapping("/all")
-//    public ResponseEntity<Object[]> getAll() {
-//        if(apiMarvelService.getAllTest() != null) {
-//            return new ResponseEntity<Object[]>(apiMarvelService.getAllTest(), HttpStatus.OK);
-//        }
-//        else {
-//            return new ResponseEntity<Object[]>(apiMarvelService.getAllTest(), HttpStatus.NOT_FOUND);
-//        }
-//    }
-//    @GetMapping("/{characterId}")
-//    public ResponseEntity<Object> getById(@PathVariable("characterId") int id) {
-//        if(apiMarvelService.getByIdTest(id) != null) {
-//            return new ResponseEntity<Object>(apiMarvelService.getByIdTest(id), HttpStatus.OK);
-//        }
-//        else {
-//            return new ResponseEntity<Object>(apiMarvelService.getByIdTest(id), HttpStatus.NOT_FOUND);
-//        }
-//    }
 
 }
