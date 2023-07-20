@@ -1,13 +1,12 @@
 package com.app.TestJava.services;
 
-import com.app.TestJava.models.MarvelModel;
+import com.app.TestJava.models.MarvelApi;
+import com.app.TestJava.models.MarvelCharacter;
 import com.app.TestJava.security.MarvelAuthentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 
 
@@ -34,13 +33,13 @@ public class ApiMarvelService {
 //        }
 //    }
 
-    public Object getAll() {
+    public MarvelApi getAll() {
         try {
             RestTemplate restTemplate = new RestTemplate();
             String url = this.baseUrl + "?ts=" + this.timestamp + "&apikey=" + this.publicKey + "&hash=" + this.hash;
             System.out.println(url);
-            Object reponse = restTemplate.getForEntity(url, Object.class).getBody();
-            System.out.println(reponse);
+            MarvelApi reponse = restTemplate.getForEntity(url, MarvelApi.class).getBody();
+            System.out.println(reponse.getData().getResults()[0]);
             return reponse;
 
         }
@@ -49,13 +48,12 @@ public class ApiMarvelService {
             return null;
         }
     }
-    public MarvelModel getById(int id) {
+    public MarvelApi getById(int id) {
         try {
             RestTemplate restTemplate = new RestTemplate();
             String url = baseUrl + "/" +id + "?ts=" + timestamp + "&apikey=" + publicKey + "&hash=" + hash;
             System.out.println(url);
-            MarvelModel reponse = restTemplate.getForEntity(url, MarvelModel.class).getBody();
-
+            MarvelApi reponse = restTemplate.getForEntity(url, MarvelApi.class).getBody();
             return reponse;
         }
         catch (HttpClientErrorException e) {
