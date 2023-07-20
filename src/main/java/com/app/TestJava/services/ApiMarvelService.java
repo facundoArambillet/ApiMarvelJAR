@@ -8,6 +8,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -19,28 +21,18 @@ public class ApiMarvelService {
     private String timestamp = String.valueOf(Instant.now().toEpochMilli()).substring(0,3);
     private String hash = MarvelAuthentication.generateHash(this.timestamp,this.privateKey,this.publicKey);
 
-//    public MarvelModel[] getAll() {
-//        try {
-//            RestTemplate restTemplate = new RestTemplate();
-//            String url = baseUrl + "?ts=" + this.timestamp + "&apikey=" + this.apiKey + "&hash=" + this.hash;
-//            MarvelModel[] reponse = restTemplate.getForEntity(url, MarvelModel[].class).getBody();
-//            return reponse;
-//
-//        }
-//        catch (HttpClientErrorException e) {
-//            System.out.println(e);
-//            return null;
-//        }
-//    }
 
-    public MarvelApi getAll() {
+    public List<MarvelCharacter> getAll() {
         try {
             RestTemplate restTemplate = new RestTemplate();
             String url = this.baseUrl + "?ts=" + this.timestamp + "&apikey=" + this.publicKey + "&hash=" + this.hash;
             System.out.println(url);
             MarvelApi reponse = restTemplate.getForEntity(url, MarvelApi.class).getBody();
-            System.out.println(reponse.getData().getResults()[0]);
-            return reponse;
+            List<MarvelCharacter> characters = new ArrayList<>();
+            for(MarvelCharacter character : reponse.getData().getResults()) {
+                characters.add(character);
+            }
+            return characters;
 
         }
         catch (HttpClientErrorException e) {
@@ -48,13 +40,15 @@ public class ApiMarvelService {
             return null;
         }
     }
-    public MarvelApi getById(int id) {
+    public MarvelCharacter getById(int id) {
         try {
             RestTemplate restTemplate = new RestTemplate();
             String url = baseUrl + "/" +id + "?ts=" + timestamp + "&apikey=" + publicKey + "&hash=" + hash;
             System.out.println(url);
             MarvelApi reponse = restTemplate.getForEntity(url, MarvelApi.class).getBody();
-            return reponse;
+            //Agarro el primero porque siempre me va a devolver uno solo
+            MarvelCharacter character = reponse.getData().getResults()[0];
+            return character;
         }
         catch (HttpClientErrorException e) {
             System.out.println(e);
