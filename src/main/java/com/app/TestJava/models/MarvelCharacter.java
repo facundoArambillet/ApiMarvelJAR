@@ -1,10 +1,8 @@
 package com.app.TestJava.models;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class MarvelCharacter {
     private int id;
     private String name;

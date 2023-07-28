@@ -32,16 +32,12 @@ public class SecurityConfig {
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        return http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .anyRequest().hasRole("ADMIN")
-                );
-        http
-                .formLogin(Customizer.withDefaults());
-        http
-                .httpBasic(Customizer.withDefaults());
-
-        return http.build();
+                        .anyRequest().hasRole("ADMIN"))
+                .formLogin(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults())
+                .build();
     }
     @Bean
     public PasswordEncoder passwordEncoder(){
