@@ -21,11 +21,10 @@ public class ApiMarvelService {
     private String publicKey;
     @Value("${privateKey}")
     private String privateKey;
-    //private static String publicKey = "7de0a07897b8e56b7c99b8c5a8740055";
-    //private static String privateKey = "5f1040d9af2401040adc394489857e64c256414b";
+//    private String publicKey = "7de0a07897b8e56b7c99b8c5a8740055";
+//    private String privateKey = "5f1040d9af2401040adc394489857e64c256414b";
     private String timestamp;
-    private String hash;
-
+    private  String hash;
 
     public List<MarvelCharacter> getAll() {
         try {
@@ -46,6 +45,7 @@ public class ApiMarvelService {
             return null;
         }
     }
+
     public MarvelCharacter getById(int id) {
         try {
             RestTemplate restTemplate = new RestTemplate();
