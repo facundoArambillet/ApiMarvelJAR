@@ -21,8 +21,7 @@ public class ApiMarvelService {
     private String publicKey;
     @Value("${privateKey}")
     private String privateKey;
-//    private String publicKey = "7de0a07897b8e56b7c99b8c5a8740055";
-//    private String privateKey = "5f1040d9af2401040adc394489857e64c256414b";
+
     private String timestamp;
     private  String hash;
 
